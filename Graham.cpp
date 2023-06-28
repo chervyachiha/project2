@@ -64,7 +64,7 @@ double Graham::dist (double a1,double a2,double b1,double b2){
     return sqrt((a2-a1)*(a2-a1)+(b2-b1)*(b2-b1));
 }
 
-int Graham::Gra(double *c_x, double *c_y)
+void Graham::Gra(double *c_x, double *c_y, std::vector<Point> c)
 {
     double D_x[m_v.size()];
     double D_y[m_v.size()];
@@ -111,5 +111,8 @@ int Graham::Gra(double *c_x, double *c_y)
         c_x[m]=D_x[i];
         c_y[m]=D_y[i];
     }
-    return m;
+    for (int i=0; i<m;i++)
+    {
+        c.push_back(Point (c_x[i], c_y[i]));
+    }
 }

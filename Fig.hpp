@@ -8,14 +8,14 @@ protected:
     double m_area;
     std::vector <Point> m_size; ///вершины многоугольника
     int X, Y; ///Координаты центра
-    Fig(const std::vector<Point>* v, int x, int y);
+    Fig(const std::vector<Point>* v);
     virtual ~Fig();
 };
 
 class Triangle: public Fig
 {
 public:
-    Triangle(const std::vector<Point>* size, int x, int y);
+    Triangle(const std::vector<Point>* size);
     virtual ~Triangle();
     double GetSide(int n0, int n1);
     int Check();
@@ -25,7 +25,7 @@ public:
 };
 class Polygon: public Fig {
 public:
-    Polygon(const std::vector<Point> *size, int x, int y);
+    Polygon(const std::vector<Point> *size);
     virtual ~Polygon();
     double GetArea();
     int SGN(Point p1, Point p2, Point p);

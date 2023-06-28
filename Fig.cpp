@@ -4,11 +4,11 @@
 #include <vector>
 #include <math.h>
 
-Fig::Fig(const std::vector<Point>* v, int x, int y) :  m_size(*v),X(x),Y(y) {}
+Fig::Fig(const std::vector<Point>* v) :  m_size(*v) {}
 Fig::~Fig() {}
 
 
-Triangle::Triangle(const std::vector<Point>* size, int x, int y) : Fig(size, x,y) {}
+Triangle::Triangle(const std::vector<Point>* size) : Fig(size) {}
 Triangle::~Triangle(){}
 double Triangle::GetSide(int n0, int n1)
 {
@@ -44,7 +44,7 @@ double Triangle::OrArea()
     return m_area;
 }
 
-Polygon::Polygon(const std::vector<Point>* size, int x, int y) : Fig(size, x,y) {}
+Polygon::Polygon(const std::vector<Point>* size) : Fig(size) {}
 Polygon::~Polygon(){}
 double Polygon::GetArea()
 {
