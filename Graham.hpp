@@ -12,11 +12,9 @@ protected:
 public:
     Graham (const std::vector<Point>* v);
     ~Graham();
-
-    void xy(double D_x[], double D_y[]);
-    void quick_sort_angle(double angle[], double D_x[], double D_y[], double di[], int l, int r);
-    void quick_sort_dist(double D_x[], double D_y[], double di[], int l, int r);
-    int orsquare (int xA, int yA, int xB, int yB, int xC, int yC);
-    double dist (double a1,double a2,double b1,double b2);
-    void Gra(double *c_x, double *c_y, std::vector<Point> c);
+    void quick_sort_angle(std::vector<double> angle, std::vector<Point> D, std::vector<double> di, int l, int r);
+    void quick_sort_dist(std::vector<Point> D, std::vector<double> di, int l, int r);
+    int orsquare (Point a, Point b, Point c);
+    double dist (Point a,Point b);
+    int Gra(std::vector<Point> D, std::vector<Point> c);
 };

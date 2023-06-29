@@ -5,8 +5,6 @@
 #include "Fig.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-#include <chrono>
-#include <thread>
 #include "Graham.hpp"
 
 
@@ -20,9 +18,6 @@ int main()
     Point tr3(1400,100);
     std::vector <Point> v ={tr1,tr2,tr3};
     Triangle f(&v);
-    std::cout <<"Perimetr: " << f.GetPerimeter() <<std::endl;
-    std::cout << "Area: " << f.GetArea() <<std::endl;
-    std::cout << "OrArea: " << f.OrArea() <<std::endl;
 
     ///четырехугольник
     Point p1(2000,600);
@@ -42,8 +37,8 @@ int main()
     Point h3(600,900);
     Point h4(100,1100);
     Point h5(100,800);
-    Point h6(100,1100);
-    std::vector<Point> H = {h1,h2,h3,h4,h5,h6};
+    Point h6(400,1100);
+    std::vector<Point> H = {h1,h2,h3,h6,h5,h4};
     Polygon h(&H);
     std::cout<<"Convex: " << h.Convex()<<std::endl;
 
@@ -63,7 +58,7 @@ int main()
     Point g11(600,200);
     std::vector<Point> g = {g1,g2,g3,g4,g5,g6,g7,g8,g9,g10,g11};
     Graham gr(&g);
-    gr.Gra(c_x,c_y,c);
+    std::cout<< gr.Gra(g,c)<<std::endl;
 
 
     ///пересекающиеся отрезки
@@ -89,16 +84,7 @@ int main()
         window.clear();
 
 
-
-        /*Point h1(300,500);
-        Point h2(400,300);
-        Point h3(600,200);
-        Point h4(100,400);
-        Point h5(100,100);
-        Point h6(100,400);
-        std::vector<Point> H = {h1,h2,h3,h4,h5,h6};*/
         ///шестиугольник
-        H.push_back(H[0]);
         for (int i=0; i<H.size()-1;i++) {
             sf::Vertex Hh[] =
                     {
@@ -107,6 +93,12 @@ int main()
                     };
             window.draw(Hh, 2, sf::Lines);
         }
+        sf::Vertex Hh[] =
+                {
+                        sf::Vertex(sf::Vector2f(H[H.size()-1].x(), H[H.size()-1].y())),
+                        sf::Vertex(sf::Vector2f(H[0].x(), H[0].y()))
+                };
+        window.draw(Hh, 2, sf::Lines);
 
         ///грэхем
         for (int i=0;i<g.size();i++) {
@@ -115,8 +107,7 @@ int main()
             gg.setPosition(g[i].x(), g[i].y());
             window.draw(gg);
         }
-        /*c.push_back(c[0]);
-        for (int i=0; i<c.size()-1;i++) {
+        /*for (int i=0; i<c.size()-1;i++) {
             sf::Vertex yy[] =
                     {
                             sf::Vertex(sf::Vector2f(c[i].x(), c[i].y())),
@@ -127,7 +118,6 @@ int main()
 
 
         ///треугольник
-        v.push_back(v[0]);
         for (int i=0; i<v.size()-1;i++) {
             sf::Vertex tr[] =
                     {
@@ -136,17 +126,28 @@ int main()
                     };
             window.draw(tr, 2, sf::Lines);
         }
+        sf::Vertex tr[] =
+                {
+                        sf::Vertex(sf::Vector2f(v[v.size()-1].x(), v[v.size()-1].y())),
+                        sf::Vertex(sf::Vector2f(v[0].x(), v[0].y()))
+                };
+        window.draw(tr, 2, sf::Lines);
 
         ///четырехугольник
-        v1.push_back(v1[0]);
         for (int i=0; i<v1.size()-1;i++) {
-            sf::Vertex tr[] =
+            sf::Vertex rr[] =
                     {
                             sf::Vertex(sf::Vector2f(v1[i].x(), v1[i].y())),
                             sf::Vertex(sf::Vector2f(v1[i+1].x(), v1[i+1].y()))
                     };
-            window.draw(tr, 2, sf::Lines);
+            window.draw(rr, 2, sf::Lines);
         }
+        sf::Vertex rr[] =
+                {
+                        sf::Vertex(sf::Vector2f(v1[v1.size()-1].x(), v1[v1.size()-1].y())),
+                        sf::Vertex(sf::Vector2f(v1[0].x(), v1[0].y()))
+                };
+        window.draw(rr, 2, sf::Lines);
 
         ///пересекающиеся отрезки
         sf::Vertex R[] =
@@ -154,15 +155,13 @@ int main()
                         sf::Vertex(sf::Vector2f(r1.x(), r1.y())),
                         sf::Vertex(sf::Vector2f(r2.x(), r2.y()))
                 };
-
+        window.draw(R, 2, sf::Lines);
         sf::Vertex Q[] =
                 {
                         sf::Vertex(sf::Vector2f(q1.x(), q1.y())),
                         sf::Vertex(sf::Vector2f(q2.x(), q2.y()))
                 };
         window.draw(Q, 2, sf::Lines);
-        window.draw(R, 2, sf::Lines);
-
 
         window.display();
     }
