@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 
 #include <math.h>
 #include <iostream>
@@ -17,4 +17,4 @@ public:
     int orsquare (Point a, Point b, Point c);
     double dist (Point a,Point b);
     int Gra(std::vector<Point> D, std::vector<Point> c);
-};
+};*/

@@ -2,6 +2,8 @@
 #include "Point.hpp"
 #include <iostream>
 #include <math.h>
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 
 Line::Line(Point p1, Point p2) : P1(p1),P2(p2) {}
 Line::~Line(){}
@@ -11,8 +13,9 @@ Point Line:: Start()
 }
 Point Line:: Finish()
 {
-    return P1;
+    return P2;
 }
+
 float Line:: GetLength()
 {
     float a = sqrt(pow(P2.x() -P1.x(),2)+pow(P2.y()-P1.y(),2));
@@ -66,4 +69,31 @@ bool Line:: PointOnSegment(float x1,float y1,float x2,float y2,float x,float y)
     if(check1==check2 && x >= fmin(x1,x2) && x<= fmax(x1,x2) && y >= fmin(y1,y2) && y <= fmax(y1,y2))
         return 1;
     return 0;
+}
+
+void Line::Draw(Line a, Line b)
+{
+    sf::RenderWindow window(sf::VideoMode(1080, 720), "SFML works!");
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        window.clear();
+        sf::Vertex R[] =
+                {
+                        sf::Vertex(sf::Vector2f(b.Start().x(), b.Start().y())),
+                        sf::Vertex(sf::Vector2f(b.Finish().x(), b.Finish().y()))
+                };
+        window.draw(R, 2, sf::Lines);
+        sf::Vertex RR[] =
+                {
+                        sf::Vertex(sf::Vector2f(a.Start().x(), a.Start().y())),
+                        sf::Vertex(sf::Vector2f(a.Finish().x(), a.Finish().y()))
+                };
+        window.draw(RR, 2, sf::Lines);
+        window.display();
+    }
 }

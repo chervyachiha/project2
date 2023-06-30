@@ -15,4 +15,5 @@ public:
     int SGN(Point p1,Point p2, Point p);
     int Intersection(Point p1, Point p2,Point p3, Point p4);
     bool PointOnSegment(float x1,float y1,float x2,float y2,float x,float y);
+    void Draw(Line a, Line b);
 };

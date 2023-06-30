@@ -3,6 +3,8 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 
 Fig::Fig(const std::vector<Point>* v) :  m_size(*v) {}
 Fig::~Fig() {}
@@ -42,6 +44,34 @@ double Triangle::OrArea()
 {
     m_area = 0.5*(m_size[1].x()*m_size[2].y()+m_size[0].x()*m_size[1].y()-m_size[1].x()*m_size[0].y()-m_size[2].x()*m_size[1].y()-m_size[0].x()*m_size[2].y()+m_size[0].y()*m_size[2].x());
     return m_area;
+}
+void Triangle::Draw()
+{
+    sf::RenderWindow window(sf::VideoMode(1080, 720), "SFML works!");
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        window.clear();
+        for (int i=0; i<m_size.size()-1;i++) {
+            sf::Vertex tr[] =
+                    {
+                            sf::Vertex(sf::Vector2f(m_size[i].x(), m_size[i].y())),
+                            sf::Vertex(sf::Vector2f(m_size[i+1].x(), m_size[i+1].y()))
+                    };
+            window.draw(tr, 2, sf::Lines);
+        }
+        sf::Vertex tr[] =
+                {
+                        sf::Vertex(sf::Vector2f(m_size[m_size.size()-1].x(), m_size[m_size.size()-1].y())),
+                        sf::Vertex(sf::Vector2f(m_size[0].x(), m_size[0].y()))
+                };
+        window.draw(tr, 2, sf::Lines);
+        window.display();
+    }
 }
 
 
@@ -96,3 +126,33 @@ int Polygon::Convex()
     }
     return 1;
 }
+
+void Polygon::Draw()
+{
+    sf::RenderWindow window(sf::VideoMode(1080, 720), "SFML works!");
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        window.clear();
+        for (int i=0; i<m_size.size()-1;i++) {
+            sf::Vertex Hh[] =
+                    {
+                            sf::Vertex(sf::Vector2f(m_size[i].x(), m_size[i].y())),
+                            sf::Vertex(sf::Vector2f(m_size[i+1].x(), m_size[i+1].y()))
+                    };
+            window.draw(Hh, 2, sf::Lines);
+        }
+        sf::Vertex Hh[] =
+                {
+                        sf::Vertex(sf::Vector2f(m_size[m_size.size()-1].x(), m_size[m_size.size()-1].y())),
+                        sf::Vertex(sf::Vector2f(m_size[0].x(), m_size[0].y()))
+                };
+        window.draw(Hh, 2, sf::Lines);
+        window.display();
+    }
+}
+

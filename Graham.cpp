@@ -1,4 +1,4 @@
-#include <math.h>
+/*#include <math.h>
 #include <iostream>
 #include <vector>
 #include "Point.hpp"
@@ -94,4 +94,4 @@ int Graham::Gra(std::vector<Point> D, std::vector<Point> c)
         c[m]=D[i];
     }
     return m;
-}
+}*/
