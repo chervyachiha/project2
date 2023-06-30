@@ -31,5 +31,5 @@ public:
     int SGN(Point p1, Point p2, Point p);
     bool PointOnFig(Point p);
     int Convex();
-    void Draw();
+    void Draw(Point l);
 };

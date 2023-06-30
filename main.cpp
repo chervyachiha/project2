@@ -3,8 +3,6 @@
 #include "Point.hpp"
 #include "Line.hpp"
 #include "Fig.hpp"
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
 #include "Graham.hpp"
 
 
@@ -33,7 +31,7 @@ int main() {
     std::cout << "Area: " << t.GetArea() << std::endl;
     Point l(450, 450);
     std::cout << "Point on figure: " << t.PointOnFig(l) << std::endl;
-    //t.Draw();
+    t.Draw(l);
     std::cout<<std::endl;
 
     ///шестиугольник
@@ -47,26 +45,9 @@ int main() {
     Polygon h(&H);
     std::cout<< "Sexangle:" << std::endl;
     std::cout << "Convex: " << h.Convex() << std::endl;
-    //h.Draw();
+    std::cout << "Point on figure: " << h.PointOnFig(l) << std::endl;
+    h.Draw(l);
     std::cout<<std::endl;
-
-    ///грэхем
-    double c_x[2020], c_y[2020];
-    std::vector<Point> c = {};
-    Point g1(300, 100);
-    Point g2(600, 400);
-    Point g3(400, 500);
-    Point g4(700, 700);
-    Point g5(900, 200);
-    Point g6(500, 300);
-    Point g7(900, 500);
-    Point g8(700, 500);
-    Point g9(600, 100);
-    Point g10(500, 700);
-    Point g11(600, 200);
-    std::vector<Point> g = {g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11};
-    /*Graham gr(&g);
-    std::cout << gr.Gra(g, c) << std::endl;*/
 
 
     ///пересекающиеся отрезки
@@ -79,26 +60,25 @@ int main() {
     std::cout << "Lines:"<< std::endl;
     std::cout << "Length: " << r.GetLength() << std::endl;
     r.Intersection(r1, r2, q1, q2);
-    //r.Draw(r, q);
-    //q.Draw();
+    r.Draw(r, q);
     std::cout<<std::endl;
 
-    /*
     ///грэхем
-    for (int i=0;i<g.size();i++) {
-        sf::CircleShape gg(5);
-        gg.setFillColor(sf::Color::Green);
-        gg.setPosition(g[i].x(), g[i].y());
-        window.draw(gg);
-    }
-    for (int i=0; i<c.size()-1;i++) {
-        sf::Vertex yy[] =
-                {
-                        sf::Vertex(sf::Vector2f(c[i].x(), c[i].y())),
-                        sf::Vertex(sf::Vector2f(c[i+1].x(), c[i+1].y()))
-                };
-        window.draw(yy, 2, sf::Lines);
-    }*/
+    Point g1(300, 100);
+    Point g2(600, 400);
+    Point g3(400, 500);
+    Point g4(700, 700);
+    Point g5(900, 200);
+    Point g6(500, 300);
+    Point g7(900, 500);
+    Point g8(700, 500);
+    Point g9(600, 100);
+    Point g10(500, 700);
+    Point g11(600, 200);
+    std::vector<Point> g = {g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11};
+    Graham gr(&g);
+    gr.Draw(gr.Gra(g));
+
 
     return 0;
 }

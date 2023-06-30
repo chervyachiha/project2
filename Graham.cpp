@@ -1,13 +1,15 @@
-/*#include <math.h>
+#include <math.h>
 #include <iostream>
 #include <vector>
 #include "Point.hpp"
 #include "Graham.hpp"
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 
 Graham::Graham (const std::vector<Point>* v) :  m_v(*v) {}
 Graham::~Graham() {}
 
-void Graham::quick_sort_angle(std::vector<double> angle, std::vector<Point> D, std::vector<double> di, int l, int r) {
+void Graham::quick_sort_angle(std::vector<double> &angle, std::vector<Point> &D, std::vector<double> &di, int l, int r) {
     if (l>=r) return;
     double x=angle[l+(rand()%(r-l+1))];
     int i = l;
@@ -27,7 +29,7 @@ void Graham::quick_sort_angle(std::vector<double> angle, std::vector<Point> D, s
     quick_sort_angle(angle,D, di, l, j);
 }
 
-void Graham::quick_sort_dist(std::vector<Point> D, std::vector<double> di, int l, int r) {
+void Graham::quick_sort_dist(std::vector<Point> &D, std::vector<double> &di, int l, int r) {
     if (l>=r) return;
     double x=di[l+(rand()%(r-l+1))];
     int i = l;
@@ -46,19 +48,19 @@ void Graham::quick_sort_dist(std::vector<Point> D, std::vector<double> di, int l
     quick_sort_dist(D, di,l, j);
 }
 
-int Graham::orsquare (Point a, Point b, Point c){
+float Graham::orsquare (Point a, Point b, Point c){
     return ((b.x()*c.y())+(a.x()*b.y())+(a.y()*c.x())-(b.x()*a.y())-(c.x()*b.y())-(a.x()*c.y()));
 }
 
 double Graham::dist (Point a,Point b){
-    return sqrt((a.y()-a.x())*(a.y()-a.x())+(b.y()-b.x())*(b.y()-b.x()));
+    return sqrt((a.x()-b.x())*(a.x()-b.x())+(a.y()-b.y())*(a.y()-b.y()));
 }
 
-int Graham::Gra(std::vector<Point> D, std::vector<Point> c)
+std::vector<Point> Graham::Gra(std::vector<Point> D)
 {
     int n = m_v.size();
-    std::vector<double> angle ={};
-    std::vector<double> di={};
+    std::vector<double> angle(n);
+    std::vector<double> di(n);
     double min_x=INT_MAX,min_y=INT_MAX;
     int min_i=INT_MAX;
     for (int i=0;i<n;i++){
@@ -66,7 +68,7 @@ int Graham::Gra(std::vector<Point> D, std::vector<Point> c)
         if (D[i].x()==min_x && D[i].y()<min_y) {min_x=D[i].x(); min_y=D[i].y(); min_i=i;}
     }
     std::swap(D[0],D[min_i]);
-    for (int i=1; i<n;i++){
+    for (int i=1; i<n-1;i++){
         if (D[i].x()-D[0].x()==0) angle[i]=INT_MAX;
         else  angle[i]=(D[i].y()-D[0].y())/(D[i].x()-D[0].x());
         di[i]=dist(D[i],D[0]);
@@ -80,18 +82,57 @@ int Graham::Gra(std::vector<Point> D, std::vector<Point> c)
             quick_sort_dist(D, di,start,finish);
         }
     }
-    D[n]=D[0];
+    std::vector<Point> c = {};
+    D.push_back(D[0]);
 
-    c[0]=D[0];
-    c[1]=D[1];
-    c[2]=D[2];
+    c.push_back(D[0]);
+    c.push_back(D[1]);
+    c.push_back(D[2]);
     int m=1;
     for (int i=2;i<=n;i++){
         while (orsquare(c[m-1],c[m],D[i])>0){
             m--;
         }
         m++;
-        c[m]=D[i];
+        if (m==c.size())
+            c.push_back(D[i]);
+        else
+            c[m]=D[i];
     }
-    return m;
-}*/
+    c.pop_back();
+    return c;
+}
+void Graham::Draw(std::vector<Point> c)
+{
+    sf::RenderWindow window(sf::VideoMode(1080, 720), "SFML works!");
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        window.clear();
+        for (int i=0;i<m_v.size();i++) {
+            sf::CircleShape gg(5);
+            gg.setFillColor(sf::Color::Green);
+            gg.setPosition(m_v[i].x(), m_v[i].y());
+            window.draw(gg);
+        }
+        for (int i=0; i<c.size()-1;i++) {
+            sf::Vertex yy[] =
+                    {
+                            sf::Vertex(sf::Vector2f(c[i].x(), c[i].y())),
+                            sf::Vertex(sf::Vector2f(c[i+1].x(), c[i+1].y()))
+                    };
+            window.draw(yy, 2, sf::Lines);
+        }
+        sf::Vertex yy[] =
+                {
+                        sf::Vertex(sf::Vector2f(c[c.size()-1].x(), c[c.size()-1].y())),
+                        sf::Vertex(sf::Vector2f(c[0].x(), c[0].y()))
+                };
+        window.draw(yy, 2, sf::Lines);
+        window.display();
+    }
+}

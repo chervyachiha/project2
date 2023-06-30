@@ -80,14 +80,12 @@ Polygon::~Polygon(){}
 double Polygon::GetArea()
 {
     float S = 0;
-    m_size.emplace_back(m_size[0]);
     int q = m_size.size();
-    //m_size[q].x() = m_size[0].x();
-    //m_size[q].y() = m_size[0].y();
-    for (int i = 0;i<=q-1;i++)
+    for (int i = 0;i<q-1;i++)
     {
         S +=((m_size[i+1].x()-m_size[i].x())*(m_size[i].y()+m_size[i+1].y()))/2;
     }
+    S +=((m_size[0].x()-m_size[q-1].x())*(m_size[q-1].y()+m_size[0].y()))/2;
     return abs(S);
 }
 
@@ -127,7 +125,7 @@ int Polygon::Convex()
     return 1;
 }
 
-void Polygon::Draw()
+void Polygon::Draw(Point l)
 {
     sf::RenderWindow window(sf::VideoMode(1080, 720), "SFML works!");
     while (window.isOpen()) {
@@ -138,6 +136,10 @@ void Polygon::Draw()
         }
 
         window.clear();
+        sf::CircleShape gg(5);
+        gg.setFillColor(sf::Color::Green);
+        gg.setPosition(l.x(), l.y());
+        window.draw(gg);
         for (int i=0; i<m_size.size()-1;i++) {
             sf::Vertex Hh[] =
                     {
